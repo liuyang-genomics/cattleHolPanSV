@@ -91,26 +91,3 @@ ls ${PANEL_DIR}/s*/2.assembly/s*.quast-hifiasm*/genome_stats/genome_info.txt |
         idd=$(echo $id | cut -d/ -f8)
     cat $id  | grep "X (total length: " | cut -d " " -f 4,10,15 | sed "s|^|$idd\t|"
     done
-
-
-
-# 
-cat hol-pg2hic-2024-05-22.path-stats.tsv | awk '$1 == "X"' | wc -l
-2734
-
-cat  holPri-2024-12-03.path-stats.tsv | awk '$1 == "X"' | wc -l
-1081
-
-cat hol-pg2hic-2024-05-22.path.txt | awk '$1 == "bosTau9" && $3 == "X"{print NR;a=1;next} a==1 && $3 != X && $1 == "bosTau9" {print NR; exit}'
-9171 8090
-
-cat holPri-2024-12-03.path.txt | awk '$1 == "bosTau9" && $3 == "X"{print NR;a=1;next} a==1 && $3 != X && $1 == "bosTau9" {print NR; exit}'
-9171 8090
-
-
-
-cat ${PROJECT_ROOT}/minigraph-cactus/holPri-2024-12-03//chrom-subproblems/minigraph.split.log | grep "Assigned contig to X" | wc -l
-2082
-
-cat ${PROJECT_ROOT}/minigraph-cactus/holPri-2024-12-03/chrom-subproblems/minigraph.split.log | grep "Assigned contig to X" | wc -l
-613
