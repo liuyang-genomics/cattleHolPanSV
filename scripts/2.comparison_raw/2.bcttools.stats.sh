@@ -1,0 +1,162 @@
+ls ${PROJECT_ROOT}/minigraph-cactus/*/*.vcf.gz | grep -v 'raw' | 
+    while read id; do
+        sbatch -A ${SLURM_ACCOUNT} \
+        --cpus-per-task=8 \
+        --mem-per-cpu=8g \
+        --wrap="bcftools view --threads 8 -i 'F_MISSING<0.2' $id -Oz -o ${id/vcf.gz/.filtered.vcf.gz}"
+    done
+    
+
+ls *.filter.gz |
+    while read id; do
+        sbatch -A ${SLURM_ACCOUNT} \
+        --cpus-per-task=8 \
+        --mem-per-cpu=8g \
+        --wrap="bcftools norm --threads 8 -m- $id -Oz -o ${id/filtered/filtered-bi}"
+    done
+
+cat ../minigraph-cactus/allbovinePan-2024-07-03/allbovinePan-2024-07-03-seqfile.txt | awk '$1 ~ /sample/ {gsub(/\..*/,"",$1);print $1}' | sort -u > hol.sample
+
+cat ../minigraph-cactus/allbovinePan-2024-07-03/allbovinePan-2024-07-03-seqfile.txt | awk '$1 ~ /Jersey/ {gsub(/\..*/,"",$1);print $1}' | sort -u > jer.sample
+
+cat ../minigraph-cactus/allbovinePan-2024-07-03/allbovinePan-2024-07-03-seqfile.txt | awk '$1 ~ /hifiasm/ || $1 ~ /GCA/ {gsub(/\..*/,"",$1);print $1}' | sort -u > pub.sample
+
+cat hol.sample jer.sample pub.sample | sort -u > all.sample
+
+sbatch -A ${SLURM_ACCOUNT} --cpus-per-task=8 --wrap="bcftools view --threads 8 -i 'F_MISSING<0.2' -c 1 -S hol.sample allbovinePan-2024-07-03.filtered-bi.vcf.gz -Oz -o allbovinePan-2024-07-03_hol.filtered-bi.vcf.gz"
+sbatch -A ${SLURM_ACCOUNT} --cpus-per-task=8 --wrap="bcftools view --threads 8 -i 'F_MISSING<0.2' -c 1 -S jer.sample allbovinePan-2024-07-03.filtered-bi.vcf.gz -Oz -o allbovinePan-2024-07-03_jer.filtered-bi.vcf.gz"
+sbatch -A ${SLURM_ACCOUNT} --cpus-per-task=8 --wrap="bcftools view --threads 8 -i 'F_MISSING<0.2' -c 1 -S pub.sample allbovinePan-2024-07-03.filtered-bi.vcf.gz -Oz -o allbovinePan-2024-07-03_pub.filtered-bi.vcf.gz"
+
+sbatch -A ${SLURM_ACCOUNT} --cpus-per-task=8 --wrap="bcftools view --threads 8 -i 'F_MISSING<0.2' -c 1 -S hol.sample allbovinePan-2024-07-03.filtered.vcf.gz -Oz -o allbovinePan-2024-07-03_hol.filtered.vcf.gz"
+sbatch -A ${SLURM_ACCOUNT} --cpus-per-task=8 --wrap="bcftools view --threads 8 -i 'F_MISSING<0.2' -c 1 -S jer.sample allbovinePan-2024-07-03.filtered.vcf.gz -Oz -o allbovinePan-2024-07-03_jer.filtered.vcf.gz"
+sbatch -A ${SLURM_ACCOUNT} --cpus-per-task=8 --wrap="bcftools view --threads 8 -i 'F_MISSING<0.2' -c 1 -S pub.sample allbovinePan-2024-07-03.filtered.vcf.gz -Oz -o allbovinePan-2024-07-03_pub.filtered.vcf.gz"
+
+sbatch -A ${SLURM_ACCOUNT} --cpus-per-task=8 --wrap="bcftools view --threads 8 -i 'F_MISSING<0.2' -c 1 -s sample_4232 bovinePanPhase-2024-07-03.filtered-bi.vcf.gz -Oz -o bovinePanPhase-2024-07-03_hol.filtered-bi.vcf.gz"
+sbatch -A ${SLURM_ACCOUNT} --cpus-per-task=8 --wrap="bcftools view --threads 8 -i 'F_MISSING<0.2' -c 1 -s Jersey_441 bovinePanPhase-2024-07-03.filtered-bi.vcf.gz -Oz -o bovinePanPhase-2024-07-03_jer.filtered-bi.vcf.gz"
+sbatch -A ${SLURM_ACCOUNT} --cpus-per-task=8 --wrap="bcftools view --threads 8 -i 'F_MISSING<0.2' -c 1 -S pub.sample bovinePanPhase-2024-07-03.filtered-bi.vcf.gz -Oz -o bovinePanPhase-2024-07-03_pub.filtered-bi.vcf.gz"
+
+sbatch -A ${SLURM_ACCOUNT} --cpus-per-task=8 --wrap="bcftools view --threads 8 -i 'F_MISSING<0.2' -c 1 -s sample_4232 bovinePanPhase-2024-07-03.filtered.vcf.gz -Oz -o bovinePanPhase-2024-07-03_hol.filtered.vcf.gz"
+sbatch -A ${SLURM_ACCOUNT} --cpus-per-task=8 --wrap="bcftools view --threads 8 -i 'F_MISSING<0.2' -c 1 -s Jersey_441 bovinePanPhase-2024-07-03.filtered.vcf.gz -Oz -o bovinePanPhase-2024-07-03_jer.filtered.vcf.gz"
+sbatch -A ${SLURM_ACCOUNT} --cpus-per-task=8 --wrap="bcftools view --threads 8 -i 'F_MISSING<0.2' -c 1 -S pub.sample bovinePanPhase-2024-07-03.filtered.vcf.gz -Oz -o bovinePanPhase-2024-07-03_pub.filtered.vcf.gz"
+
+ls *.filter*vcf.gz | grep -v "$(ls *.filter*vcf.gz.tbi | sed 's/.tbi//')" |
+    while read id; do
+        sbatch -A ${SLURM_ACCOUNT} \
+        --cpus-per-task=2 \
+        --mem-per-cpu=8g \
+        --wrap="tabix -p vcf $id"
+    done
+
+ls *.filter*vcf.gz | 
+    while read id; do
+        sbatch -A ${SLURM_ACCOUNT} \
+        --cpus-per-task=4 \
+        --mem-per-cpu=8g \
+        --wrap="bcftools stats --threads $id > ${id/gz/stats}"
+    done
+
+######### 2.1.sec #####
+
+cat all.sample | while read id;
+do 
+ls 2.0.filtered/*.filtered.vcf.gz | while read file;
+do 
+file_name=$(basename $file)
+file_suffix=${file_name#*.}
+file_name=${file_name%%.*}
+    sbatch -A ${SLURM_ACCOUNT} \
+    --cpus-per-task=8 \
+    --wrap="bcftools view --threads 8 -i 'F_MISSING<0.2' -c 1 -s $id $file -Oz -o 2.2.filtered.ind/${file_name}_${id}.$file_suffix"
+done
+done
+
+
+cat all.sample | while read id;
+do 
+ls 3.0.bi-filtered/*.filtered-bi.vcf.gz | while read file;
+do 
+file_name=$(basename $file)
+file_suffix=${file_name#*.}
+file_name=${file_name%%.*}
+    sbatch -A ${SLURM_ACCOUNT} \
+    --cpus-per-task=8 \
+    --wrap="bcftools view --threads 8 -i 'F_MISSING<0.2' -c 1 -s $id $file -Oz -o 3.2.bi-filtered.ind/${file_name}_${id}.$file_suffix"
+done
+done
+
+
+mkdir -p 4.vcf.stats
+
+ls */*.filter*vcf.gz | 
+    while read id; do
+        idd=$(basename $id);
+        idd=${idd/gz/stats}
+        sbatch -A ${SLURM_ACCOUNT} \
+        -p ${SLURM_PARTITION} \
+        --cpus-per-task=4 \
+        --mem-per-cpu=8g \
+        --wrap="bcftools stats --threads 4 $id > 4.vcf.stats/$idd"
+    done
+
+cat > 4.vcf.stats/vcf.filtered.stats.tab <<EOF
+ID samples records no-ALTs SNPs MNPs indels others multiallelic-sites multiallelic-SNP
+EOF
+
+ls -1 4.vcf.stats/*.filtered.vcf.stats |
+    while read id; do
+        idd=$(basename $id);
+        idd=${idd%.*};
+        awk '$1 == "SN"{a[NR]=$NF} 
+        END {
+            printf "%s ",ID
+            for(i in a)printf "%s ",a[i]
+            print ""
+        }' ID=$idd $id >> 4.vcf.stats/vcf.filtered.stats.tab 
+    done
+
+cat > 4.vcf.stats/vcf.filtered-bi.stats.tab <<EOF
+ID samples records no-ALTs SNPs MNPs indels others multiallelic-sites multiallelic-SNP
+EOF
+
+ls -1 4.vcf.stats/*.filtered-bi.vcf.stats |
+    while read id; do
+        idd=$(basename $id);
+        idd=${idd%%.*};
+        awk '$1 == "SN"{a[NR]=$NF} 
+        END {
+            printf "%s ",ID
+            for(i in a)printf "%s ",a[i]
+            print ""
+        }' ID=$idd $id >> 4.vcf.stats/vcf.filtered-bi.stats.tab 
+    done
+
+
+
+
+###
+cat 4.vcf.stats/vcf.filtered.stats.tab | grep sample_4232
+allbovinePan-2024-07-03_sample_4232 1 7371302 0 6262181 402920 1327335 220423 1307855 219863
+bovinePanPhase-2024-07-03_sample_4232 1 7283013 0 6192437 374157 1287931 199792 1238072 206568
+hol-pg2hic-2024-05-22_sample_4232 1 7747253 0 6482229 242282 1128333 80129 534066 57537
+
+cat 4.vcf.stats/vcf.filtered.stats.tab | grep Jersey_441
+allbovinePan-2024-07-03_Jersey_441 1 7080717 0 5975595 384071 1319703 214251 1263771 209147
+bovinePanPhase-2024-07-03_Jersey_441 1 7007379 0 5918903 358354 1282145 194927 1198639 196589
+jer-pg-2024-05-15_Jersey_441 1 7281863 0 6050232 218376 1068610 59733 382568 35721
+
+
+cat 4.vcf.stats/vcf.filtered-bi.stats.tab | grep sample_4232
+allbovinePan-2024-07-03_sample_4232 1 7520569 0 6102824 198310 1134376 85059 0 0
+bovinePanPhase-2024-07-03_sample_4232 1 7428113 0 6048801 191433 1108138 79741 0 0
+hol-pg2hic-2024-05-22_sample_4232 1 7885014 0 6444363 198724 1185062 56865 0 0
+
+
+cat 4.vcf.stats/vcf.filtered-bi.stats.tab | grep Jersey_441
+allbovinePan-2024-07-03_Jersey_441 1 7213602 0 5818600 186438 1127225 81339 0 0
+bovinePanPhase-2024-07-03_Jersey_441 1 7136425 0 5776661 180570 1102644 76550 0 0
+jer-pg-2024-05-15_Jersey_441 1 7398756 0 6028346 196044 1126220 48146 0 0
+
+######### 2.1.sec #####
+
+
+!!! GCA_030378505
