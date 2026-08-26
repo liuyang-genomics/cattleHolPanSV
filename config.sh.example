@@ -14,6 +14,10 @@ export SLURM_ACCOUNT="your_slurm_account"
 
 # GPU partition, used by the DeepVariant steps. The published runs used
 # "gpu-v100" on USDA SCINet; set this to whatever your cluster provides.
+export SLURM_PARTITION="your_partition"
+
+# GPU partition, used by the DeepVariant steps. The published runs used
+# "gpu-v100" on USDA SCINet; set this to whatever your cluster provides.
 export SLURM_GPU_PARTITION="gpu"
 
 # Login-node hostname, used only by the manual `scp` lines that pull summary
