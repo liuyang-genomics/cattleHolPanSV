@@ -1,4 +1,10 @@
 #!/bin/bash
+# --- site configuration ---
+# Copy config.sh.example to config.sh at the repository root, edit the paths,
+# then `source config.sh` before running this script.
+: "${PROJECT_ROOT:?PROJECT_ROOT is unset - see config.sh.example at the repository root}"
+# --------------------------
+
 # vcf_to_bed_compare.sh
 # Extract BED-like info from VCFs for comparison (first 5 columns)
 

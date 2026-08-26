@@ -1,3 +1,12 @@
+# --- site configuration ---
+# Copy config.sh.example to config.sh at the repository root, edit the paths,
+# then `source config.sh` before running this script.
+: "${PANEL_DIR:?PANEL_DIR is unset - see config.sh.example at the repository root}"
+: "${PROJECT_ROOT:?PROJECT_ROOT is unset - see config.sh.example at the repository root}"
+: "${REF_DIR:?REF_DIR is unset - see config.sh.example at the repository root}"
+: "${SOFTWARE_DIR:?SOFTWARE_DIR is unset - see config.sh.example at the repository root}"
+# --------------------------
+
 cd ${SOFTWARE_DIR}
 mamba create -n cactus  -c conda-forge python=3
 conda activate cactus
@@ -66,7 +75,7 @@ echo -e "bosTau9\t${REF_DIR}/ARS_UCD_v2.0.fa" >>  $cactusVcf_name-seqfile.txt
 ### clean toil 
 toil clean $cactusVcf_name-seqfile.js
 export PATH=${SOFTWARE_DIR}/cactus-bin-v2.7.1/bin:$PATH
-export SLURM_ACCOUNT=${SLURM_ACCOUNT}
+export SLURM_ACCOUNT=${SLURM_ACCOUNT:?SLURM_ACCOUNT is unset - see config.sh.example}
 export SALLOC_ACCOUNT=$SLURM_ACCOUNT
 export SBATCH_ACCOUNT=$SLURM_ACCOUNT
 export SALLOC_PARTITION=${SLURM_PARTITION}

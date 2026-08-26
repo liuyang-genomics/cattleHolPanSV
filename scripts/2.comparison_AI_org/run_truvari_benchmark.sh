@@ -1,4 +1,10 @@
 #!/bin/bash
+# --- site configuration ---
+# Copy config.sh.example to config.sh at the repository root, edit the paths,
+# then `source config.sh` before running this script.
+: "${PROJECT_ROOT:?PROJECT_ROOT is unset - see config.sh.example at the repository root}"
+# --------------------------
+
 # run_truvari_benchmark.sh
 # Benchmark SV calls using truvari against pangenome reference VCF
 

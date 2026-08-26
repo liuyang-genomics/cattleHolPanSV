@@ -1,3 +1,11 @@
+# --- site configuration ---
+# Copy config.sh.example to config.sh at the repository root, edit the paths,
+# then `source config.sh` before running this script.
+: "${PANEL_DIR:?PANEL_DIR is unset - see config.sh.example at the repository root}"
+: "${PROJECT_ROOT:?PROJECT_ROOT is unset - see config.sh.example at the repository root}"
+: "${SOFTWARE_DIR:?SOFTWARE_DIR is unset - see config.sh.example at the repository root}"
+# --------------------------
+
 alias cdc='cd ${PROJECT_ROOT}/stat_pan'
 alias l='ls -lh'
 alias sa='source activate'
@@ -206,7 +214,7 @@ $line
         "
     done
 
-C:\Users\${USER}\OneDrive - University of Maryland\Data\2024-02-07.cattleLR-SR-GWAS\2.analyses\1.1.pan.plot
+# <local workstation path redacted - results were copied to a local workstation here>
 scp ${CLUSTER_HOST}:${PROJECT_ROOT}/stat_pan/1.pan.stats_bp/*ref.tsv .
 # ========================================
 ################################

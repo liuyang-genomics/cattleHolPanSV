@@ -1,0 +1,9 @@
+# Keep LF in the repository. These scripts run on Linux HPC nodes; CRLF endings
+# make bash fail to parse function definitions and leave stray \r in awk fields.
+* text=auto eol=lf
+*.sh   text eol=lf
+*.awk  text eol=lf
+*.csv  text eol=lf
+*.md   text eol=lf
+*.yml  text eol=lf
+*.cff  text eol=lf

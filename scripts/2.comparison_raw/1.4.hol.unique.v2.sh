@@ -1,3 +1,9 @@
+# --- site configuration ---
+# Copy config.sh.example to config.sh at the repository root, edit the paths,
+# then `source config.sh` before running this script.
+: "${PROJECT_ROOT:?PROJECT_ROOT is unset - see config.sh.example at the repository root}"
+# --------------------------
+
 cd ${PROJECT_ROOT}/stat_pan/2.vcf_stats/0.filter
 
 # awk 'FNR==NR{split($0,b," ");printf "ID\t";for(j in b){printf "%s\t", b[j]} ;printf "\n";next} 

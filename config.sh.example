@@ -1,0 +1,54 @@
+# Site configuration for the cattleHolPanSV workflows.
+#
+#   cp config.sh.example config.sh
+#   # edit the paths below to match your system
+#   source config.sh
+#
+# config.sh is git-ignored, so your local paths never end up in a commit.
+# Every script in scripts/ fails immediately with a named variable if one of
+# these is unset, rather than silently writing to the wrong place.
+
+# --- Scheduler ---------------------------------------------------------------
+# Slurm account charged for submitted jobs (sbatch -A).
+export SLURM_ACCOUNT="your_slurm_account"
+
+# Login-node hostname, used only by the manual `scp` lines that pull summary
+# tables back to a local workstation. Not needed to run the pipeline itself.
+export CLUSTER_HOST="your.cluster.hostname"
+
+# --- Project layout ----------------------------------------------------------
+# Working root for assembly, pangenome construction, and comparison outputs.
+export PROJECT_ROOT="/path/to/your/pangenome/project"
+
+# Parent of PROJECT_ROOT, for the few scripts that reach outside it.
+export DATA_ROOT="/path/to/your/data/root"
+
+# Read-only input datasets (HiFi reads, Hi-C reads, public assemblies).
+export DATA_DIR="$DATA_ROOT/data"
+
+# Per-sample assemblies and the long-read SV panel built from them.
+export PANEL_DIR="$DATA_ROOT/cattle_LR-SV_panel"
+
+# Fast scratch for job-local temporary files and Singularity cache.
+export SCRATCH_DIR="/path/to/your/scratch"
+
+# --- Reference genome --------------------------------------------------------
+# Reference FASTA plus its index and repeat/annotation BED sets.
+export REF_DIR="/path/to/your/reference"
+
+# Shared reference and software trees owned by other groups on the same cluster.
+# Only needed to reproduce the repeat-stratified and SVision comparisons.
+export EXT_PROJECT_DIR="/path/to/shared/projects"
+
+# --- Software ----------------------------------------------------------------
+# Third-party tools not installed through conda. Expected beneath it:
+#   cactus-bin-v2.7.1/bin
+#   pangenie/build/src and pangenie/pipelines/...
+#   genotyping-pipelines/prepare-vcf-MC/workflow/scripts/annotate_vcf.py
+#   sratoolkit.3.1.0-centos_linux64/bin/fastq-dump
+#   wags/wags.sif
+export SOFTWARE_DIR="$HOME/software"
+
+# Conda installation root (the directory containing etc/profile.d/conda.sh).
+# Named environments used by these scripts: clair3, pangenie, svtools.
+export CONDA_BASE="$HOME/miniconda"

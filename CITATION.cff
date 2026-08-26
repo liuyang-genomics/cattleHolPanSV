@@ -1,0 +1,36 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the accompanying manuscript."
+type: software
+title: "cattleHolPanSV: Holstein pangenome construction and structural variant calling"
+abstract: >-
+  Workflows for HiFi assembly, Minigraph-Cactus pangenome construction, structural
+  variant and SNV calling across long- and short-read platforms, cross-caller and
+  cross-pangenome benchmarking, and SV-based GWAS in cattle.
+authors:
+  - family-names: "Yang"
+    given-names: "Liu"
+    affiliation: "University of Maryland / USDA-ARS"
+    email: "yangqism@gmail.com"
+  # TODO: add co-authors before the manuscript is submitted, e.g.
+  # - family-names: "Ma"
+  #   given-names: "Li"
+  #   affiliation: "University of Maryland"
+  # - family-names: "Liu"
+  #   given-names: "George"
+  #   affiliation: "USDA-ARS"
+repository-code: "https://github.com/xyxss/cattleHolPanSV"
+license: MIT
+# TODO: set to the release date when you tag v1.0.0
+date-released: "2025-12-30"
+# TODO: add the Zenodo DOI once the release is archived, and the manuscript DOI
+# under preferred-citation, so the paper cites a fixed version rather than main.
+keywords:
+  - pangenome
+  - structural variation
+  - cattle
+  - Holstein
+  - Minigraph-Cactus
+  - hifiasm
+  - PanGenie
+  - DeepVariant
+  - GWAS

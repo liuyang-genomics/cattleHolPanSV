@@ -1,3 +1,11 @@
+# --- site configuration ---
+# Copy config.sh.example to config.sh at the repository root, edit the paths,
+# then `source config.sh` before running this script.
+: "${DATA_ROOT:?DATA_ROOT is unset - see config.sh.example at the repository root}"
+: "${PROJECT_ROOT:?PROJECT_ROOT is unset - see config.sh.example at the repository root}"
+: "${REF_DIR:?REF_DIR is unset - see config.sh.example at the repository root}"
+# --------------------------
+
 mkdir -p ${PROJECT_ROOT}/stat_pan/5.rtg_snv
 cd ${PROJECT_ROOT}/stat_pan/5.rtg_snv
 mkdir logs
@@ -177,7 +185,7 @@ cat all.summary.txt | awk 'NR==1{print "Name Sample Comp Base Region Threshold T
 
 scp -r ${CLUSTER_HOST}:${PROJECT_ROOT}/stat_pan/5.rtg_snv/all.summary.table .
 
-C:\Users\${USER}\OneDrive - University of Maryland\Data\2024-02-07.cattleLR-SR-GWAS\2.analyses\1.7.snv_rtg
+# <local workstation path redacted - results were copied to a local workstation here>
 
 
 

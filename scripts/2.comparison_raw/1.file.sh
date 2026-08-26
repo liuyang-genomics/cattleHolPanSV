@@ -1,3 +1,9 @@
+# --- site configuration ---
+# Copy config.sh.example to config.sh at the repository root, edit the paths,
+# then `source config.sh` before running this script.
+: "${PROJECT_ROOT:?PROJECT_ROOT is unset - see config.sh.example at the repository root}"
+# --------------------------
+
 cat hol-pg2hic-2024-05-22.pangenome.vcf | grep -v "##" | wc -l
 15638895
 cat hol-pg2hic-2024-05-22.callset.vcf | grep -v "##" | wc -l

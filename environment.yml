@@ -1,0 +1,65 @@
+# Base environment for the cattleHolPanSV workflows.
+#
+#   conda env create -f environment.yml
+#   conda activate cattle-hol-pan-sv
+#
+# This covers the tools used across most stages. Several components are NOT
+# installed here and must be provided separately - see the README:
+#   - Minigraph-Cactus (cactus-bin 2.7.1, its own environment)
+#   - DeepVariant 1.6.1 (Singularity/Docker image)
+#   - Clair3 (its own conda environment, named `clair3`)
+#   - PanGenie (built from source)
+#   - PAV, SVision (containers)
+#   - RTG Tools, panacus
+name: cattle-hol-pan-sv
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.11
+  # Core file handling
+  - bcftools>=1.17
+  - htslib>=1.17
+  - samtools>=1.17
+  - tabix
+  - vcftools
+  - bedtools>=2.31
+  # Assembly and QC
+  - hifiasm>=0.19
+  - gfatools
+  - gfastats
+  - busco>=5.4
+  - quast>=5.2
+  - fastp>=0.23
+  # Alignment
+  - minimap2>=2.26
+  - pbmm2>=1.13
+  - bwa-mem2>=2.2
+  # Long-read SV calling
+  - sniffles>=2.2
+  - cutesv>=2.1
+  - pbsv>=2.9
+  - svim>=2.0
+  - svim-asm>=1.0
+  # Short-read SV and CNV
+  - smoove
+  - svtools
+  - cnvnator
+  # Joint genotyping and benchmarking
+  - glnexus
+  - truvari>=4.0
+  # Association analysis
+  - plink=1.90
+  - plink2
+  # Data retrieval
+  - sra-tools>=3.1
+  # Reporting
+  - r-base>=4.3
+  - r-data.table
+  - r-ggplot2
+  - r-dplyr
+  - pip
+  - pip:
+      - pandas
+      - numpy

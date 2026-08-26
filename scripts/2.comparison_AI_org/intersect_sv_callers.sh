@@ -1,4 +1,11 @@
 #!/bin/bash
+# --- site configuration ---
+# Copy config.sh.example to config.sh at the repository root, edit the paths,
+# then `source config.sh` before running this script.
+: "${PANEL_DIR:?PANEL_DIR is unset - see config.sh.example at the repository root}"
+: "${PROJECT_ROOT:?PROJECT_ROOT is unset - see config.sh.example at the repository root}"
+# --------------------------
+
 # intersect_sv_callers.sh
 # Intersect pangenome SVs with tool-based SV calls, followed by SV count/length/share statistics
 

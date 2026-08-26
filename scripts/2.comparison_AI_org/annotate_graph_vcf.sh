@@ -1,4 +1,11 @@
 #!/bin/bash
+# --- site configuration ---
+# Copy config.sh.example to config.sh at the repository root, edit the paths,
+# then `source config.sh` before running this script.
+: "${PROJECT_ROOT:?PROJECT_ROOT is unset - see config.sh.example at the repository root}"
+: "${SOFTWARE_DIR:?SOFTWARE_DIR is unset - see config.sh.example at the repository root}"
+# --------------------------
+
 # annotate_graph_vcf.sh
 # Annotate graph-based VCFs using their corresponding GFA files
 
