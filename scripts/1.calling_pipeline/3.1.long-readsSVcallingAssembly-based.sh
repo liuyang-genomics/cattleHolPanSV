@@ -6,8 +6,12 @@
 : "${PANEL_DIR:?PANEL_DIR is unset - see config.sh.example at the repository root}"
 : "${SCRATCH_DIR:?SCRATCH_DIR is unset - see config.sh.example at the repository root}"
 : "${REF_DIR:?REF_DIR is unset - see config.sh.example at the repository root}"
+: "${REF_FA:?REF_FA is unset - see config.sh.example at the repository root}"
+: "${REF_GFF:?REF_GFF is unset - see config.sh.example at the repository root}"
+: "${REF_TRF_BED:?REF_TRF_BED is unset - see config.sh.example at the repository root}"
 : "${EXT_PROJECT_DIR:?EXT_PROJECT_DIR is unset - see config.sh.example at the repository root}"
 : "${CONDA_BASE:?CONDA_BASE is unset - see config.sh.example at the repository root}"
+: "${BUSCO_ODB_DIR:?BUSCO_ODB_DIR is unset - see config.sh.example at the repository root}"
 # --------------------------
 
 #cat > sv-panel.config << 'EOF'
@@ -30,9 +34,9 @@ work_dir=${PANEL_DIR}
 conda_envs=${EXT_PROJECT_DIR}/uvm_mckay/software/miniconda3/envs
 
 ref_path=${REF_DIR}
-ref_fa=$ref_path/ARS_UCD_v2.0.fa
-ref_gff3=$ref_path/ARS_UCD_v2.0.gff
-ref_tdr=$ref_path/ARS-UCD2.0_trf2.bed
+ref_fa=${REF_FA}
+ref_gff3=${REF_GFF}
+ref_tdr=${REF_TRF_BED}
 # https://hgdownload.soe.ucsc.edu/goldenPath/bosTau9/bigZips/bosTau9.chromAlias.txt
 
 hic_raw="${DATA_DIR}/clean_Hi-C_8samples/"
@@ -48,7 +52,7 @@ export APPTAINER_CACHEDIR="${SCRATCH_DIR}/.singularity"
 export SINGULARITY_TMPDIR=$TMPDIR
 export APPTAINER_TMPDIR=$TMPDIR
 
-odb_path=${EXT_PROJECT_DIR}/uvm_mckay/bovine_genome
+odb_path=${BUSCO_ODB_DIR}
 odb_name=mammalia_odb10
 model_path='${CONDA_BASE}/envs/clair3/bin/models/hifi'
 platform='hifi' # 'ont' or 'pacbio'

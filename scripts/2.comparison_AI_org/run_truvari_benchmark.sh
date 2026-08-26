@@ -3,6 +3,7 @@
 # Copy config.sh.example to config.sh at the repository root, edit the paths,
 # then `source config.sh` before running this script.
 : "${PROJECT_ROOT:?PROJECT_ROOT is unset - see config.sh.example at the repository root}"
+: "${REF_RM_DIR:?REF_RM_DIR is unset - see config.sh.example at the repository root}"
 # --------------------------
 
 # run_truvari_benchmark.sh
@@ -13,7 +14,7 @@ set -euo pipefail
 ref_vcf="${PROJECT_ROOT}/stat_pan/4.truvari_sv/reference/holstein_pan_merged.vcf.gz"
 callset_dir="${PROJECT_ROOT}/stat_pan/4.truvari_sv/0.sv_vcfgs"
 out_dir="${PROJECT_ROOT}/stat_pan/4.truvari_sv/1.benchmark"
-repeat_dir="${PROJECT_ROOT}/stat_pan/ref/ARS_UCD_v2.0.ref_repeat"
+repeat_dir="${REF_RM_DIR}"
 mkdir -p "$out_dir"
 
 # Run truvari bench per sample + repeat region

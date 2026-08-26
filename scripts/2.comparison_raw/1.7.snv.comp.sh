@@ -4,6 +4,9 @@
 : "${PROJECT_ROOT:?PROJECT_ROOT is unset - see config.sh.example at the repository root}"
 : "${DATA_ROOT:?DATA_ROOT is unset - see config.sh.example at the repository root}"
 : "${REF_DIR:?REF_DIR is unset - see config.sh.example at the repository root}"
+: "${REF_FA:?REF_FA is unset - see config.sh.example at the repository root}"
+: "${REF_RM_DIR:?REF_RM_DIR is unset - see config.sh.example at the repository root}"
+: "${SAMPLE_LIST_DIR:?SAMPLE_LIST_DIR is unset - see config.sh.example at the repository root}"
 : "${SLURM_ACCOUNT:?SLURM_ACCOUNT is unset - see config.sh.example at the repository root}"
 : "${CLUSTER_HOST:?CLUSTER_HOST is unset - see config.sh.example at the repository root}"
 # --------------------------
@@ -56,7 +59,7 @@ bcftools view --regions $chrs -v snps -e 'GT=\".\"' 0.tmp/$idd.vcf.gz |
     done
     
 pangenieMerged_vcf=${PROJECT_ROOT}/pangenie_HiFi/3.pan_all/hol-pg2hic-2024-05-22_graph_genotyping.merge-biallelic.filter.vcf.gz
-cat ${PROJECT_ROOT}/stat_pan/hol.sample |
+cat ${SAMPLE_LIST_DIR}/hol.sample |
     while read id; do
         sbatch -A ${SLURM_ACCOUNT} -J $id.pangenie \
             -o logs/$id.pangenie.out \
@@ -71,7 +74,7 @@ bcftools view -s ${id/sample_/} --regions $chrs -v snps -e 'GT=\".\"' $pangenieM
 
 ###
 vcf=${PROJECT_ROOT}/pangenie_HiFi/8.rna_all/holPub.filter_ind.g-rnasnps.vcf.gz
-cat ${PROJECT_ROOT}/stat_pan/hol.sample |
+cat ${SAMPLE_LIST_DIR}/hol.sample |
     while read id; do
         sbatch -A ${SLURM_ACCOUNT} -J $id.rna \
             -o logs/$id.rna.out \
@@ -84,7 +87,7 @@ bcftools view -s ${id/sample_/} --regions $chrs -v snps $vcf  -e 'GT=\".\"' |
     done
 
 vcf=${PROJECT_ROOT}/pangenie_HiFi/8.rna_all/rna.hifi19.filter_ind.rna-filter.vcf.gz
-cat ${PROJECT_ROOT}/stat_pan/hol.sample |
+cat ${SAMPLE_LIST_DIR}/hol.sample |
     while read id; do
         sbatch -A ${SLURM_ACCOUNT} -J $id.rna \
             -o logs/$id.rna.out \
@@ -97,7 +100,7 @@ bcftools view -s ${id/sample_/} --regions $chrs -v snps $vcf -e 'GT=\".\"' |
     done
 
 pangenieMerged_vcf2=${PROJECT_ROOT}/pangenie_HiFi/3.pan_all/jerHap-pg-2024-12-18_graph_genotyping.merge-biallelic.filter.vcf.gz
-cat ${PROJECT_ROOT}/stat_pan/hol.sample |
+cat ${SAMPLE_LIST_DIR}/hol.sample |
     while read id; do
         idd=$id
         sbatch -A ${SLURM_ACCOUNT} -J $idd \
@@ -114,11 +117,11 @@ bcftools view -s ${id/sample_/} --regions $chrs -v snps $pangenieMerged_vcf2 -e 
 # 1.6.sv.com.sh
 
 ref_path=${REF_DIR}
-ref_fa=$ref_path/ARS_UCD_v2.0.fa
+ref_fa=${REF_FA}
 
 tools1="pan pangenie-sr pangenie-holForJer snv_deepv snv_hybird snv_hifi snv_rna3 snv_rna4"
 tools2="pan pangenie-sr pangenie-holForJer snv_deepv snv_hybird snv_hifi snv_rna3 snv_rna4"
-cat ${PROJECT_ROOT}/stat_pan/hol.sample | 
+cat ${SAMPLE_LIST_DIR}/hol.sample | 
     while read id; do
         for tool1 in $tools1; do
         for tool2 in $tools2; do
@@ -142,14 +145,14 @@ done
 
 
 ref_path=${REF_DIR}
-ref_fa=$ref_path/ARS_UCD_v2.0.fa
-ref_rm=${REF_DIR}/ARS_UCD_v2.0.ref_repeat
+ref_fa=${REF_FA}
+ref_rm=${REF_RM_DIR}
 
 #rms="sv ins del cpx None RM DNA LTR Low_complexity LINE srpRNA rRNA Unknown RNA RC scRNA SINE Satellite Simple_repeat tRNA snRNA"
 rms="sv ins del cpx LTR Low_complexity LINE  SINE Satellite Simple_repeat"
 
 
-cat ${PROJECT_ROOT}/stat_pan/hol.sample | 
+cat ${SAMPLE_LIST_DIR}/hol.sample | 
     while read id; do
         for tool1 in $tools1; do
         for tool2 in $tools2; do

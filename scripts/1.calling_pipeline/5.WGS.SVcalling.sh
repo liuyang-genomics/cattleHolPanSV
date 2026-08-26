@@ -5,9 +5,11 @@
 : "${PROJECT_ROOT:?PROJECT_ROOT is unset - see config.sh.example at the repository root}"
 : "${SCRATCH_DIR:?SCRATCH_DIR is unset - see config.sh.example at the repository root}"
 : "${REF_DIR:?REF_DIR is unset - see config.sh.example at the repository root}"
+: "${REF_GAP_FILE:?REF_GAP_FILE is unset - see config.sh.example at the repository root}"
 : "${EXT_PROJECT_DIR:?EXT_PROJECT_DIR is unset - see config.sh.example at the repository root}"
 : "${SOFTWARE_DIR:?SOFTWARE_DIR is unset - see config.sh.example at the repository root}"
 : "${CONDA_BASE:?CONDA_BASE is unset - see config.sh.example at the repository root}"
+: "${SLURM_GPU_PARTITION:?SLURM_GPU_PARTITION is unset - see config.sh.example at the repository root}"
 # --------------------------
 
 set -o nounset
@@ -53,7 +55,7 @@ conda_pangenie="${CONDA_BASE}/envs/pangenie"
 ref_path="${REF_DIR}/"
 fa="ARS_UCD_v2.0.chr.fa"
 ref_fa=$ref_path/$fa
-ref_gap=$ref_path/Bos_taurus.ARS-UCD1.2.dna.toplevel.genomic_gaps.txt
+ref_gap=${REF_GAP_FILE}
 ref_repeat="${EXT_PROJECT_DIR}/ruminant_t2t/existing_NCBI_references/Cattle/RM_GCF_002263795/GCF_002263795.3_ARS-UCD2.0_genomic.fna.out.gz"
 
 

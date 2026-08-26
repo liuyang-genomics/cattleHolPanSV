@@ -4,6 +4,10 @@
 : "${PROJECT_ROOT:?PROJECT_ROOT is unset - see config.sh.example at the repository root}"
 : "${PANEL_DIR:?PANEL_DIR is unset - see config.sh.example at the repository root}"
 : "${REF_DIR:?REF_DIR is unset - see config.sh.example at the repository root}"
+: "${REF_FA:?REF_FA is unset - see config.sh.example at the repository root}"
+: "${REF_RM_DIR:?REF_RM_DIR is unset - see config.sh.example at the repository root}"
+: "${CONDA_BASE:?CONDA_BASE is unset - see config.sh.example at the repository root}"
+: "${SAMPLE_LIST_DIR:?SAMPLE_LIST_DIR is unset - see config.sh.example at the repository root}"
 : "${SLURM_ACCOUNT:?SLURM_ACCOUNT is unset - see config.sh.example at the repository root}"
 # --------------------------
 
@@ -103,7 +107,7 @@ bcftools view --regions $chrs -i '(INFO/SVLEN >50 && INFO/SVLEN < 1e6) || (INFO/
 svtoolsMerged_vcf=${PROJECT_ROOT}/pangenie_HiFi/5.svtools_all/output.ls.filter.vcf.gz
 bcftools view -h $svtoolsMerged_vcf > hdr.txt
 sed -i 's|##bcftools_viewVersion|##FORMAT=<ID=CN,Number=A,Type=Float,Description="Copy number">\n##bcftools_viewVersion|' hdr.txt
-cat ${PROJECT_ROOT}/stat_pan/jer.sample |
+cat ${SAMPLE_LIST_DIR}/jer.sample |
     while read id; do
         idd=$id
         sbatch -A ${SLURM_ACCOUNT} -J $idd.svtools \
@@ -117,7 +121,7 @@ bcftools view --regions $chrs 0.tmp/$idd.svtools-sr.vcf.gz -Oz -o 0.sv_vcfgs/$id
     done
 
 pangenieMerged_vcf=${PROJECT_ROOT}/pangenie_HiFi/3.pan_all/jerHap-pg-2024-12-18_graph_genotyping.merge-biallelic.filter.vcf.gz
-cat ${PROJECT_ROOT}/stat_pan/jer.sample |
+cat ${SAMPLE_LIST_DIR}/jer.sample |
     while read id; do
         idd=$id
         sbatch -A ${SLURM_ACCOUNT} -J $idd.pangenie \
@@ -131,7 +135,7 @@ bcftools view -s ${id/jer_/} --regions $chrs $pangenieMerged_vcf | awk -f pangen
     done
 
 pangenieMerged_vcf2=${PROJECT_ROOT}/pangenie_HiFi/3.pan_all/hol-pg2hic-2024-05-22_graph_genotyping.merge-biallelic.filter.vcf.gz
-cat ${PROJECT_ROOT}/stat_pan/jer.sample |
+cat ${SAMPLE_LIST_DIR}/jer.sample |
     while read id; do
         idd=$id
         sbatch -A ${SLURM_ACCOUNT} -J $idd.pangenie-jerForHol \
@@ -153,7 +157,7 @@ l 0.sv_vcfgs/*gz | awk '$5 ~ "M"{print $9}'  | while read id ; do basename $id |
 # 1.6.sv.com.sh
 
 ref_path=${REF_DIR}
-ref_fa=$ref_path/ARS_UCD_v2.0.fa
+ref_fa=${REF_FA}
 
 tools="pav_bp pav_diploid sv-cutesv sv-pbsv sv-sniffles sv-svim sv-svim-asm-bp sv-svim-asm-diploid sv-svision svtools-sr pangenie-sr pangenie-holForJer mcPri"
 
@@ -163,7 +167,7 @@ mkdir -p 1.truvari
 echo "ID tool cla precision recall f1 gt_concordance" | sed 's/ /\t/g' > truvari.summary.jer.tsv
 
 sa truvari
-cat ${PROJECT_ROOT}/stat_pan/jer.sample | 
+cat ${SAMPLE_LIST_DIR}/jer.sample | 
     while read id; do
         for tool in $tools; do
             idd=$id
@@ -191,11 +195,11 @@ tools="pav_bp pav_diploid sv-cutesv sv-pbsv sv-sniffles sv-svim sv-svim-asm-bp s
 
 echo "ID tool cla precision recall f1 gt_concordance" | sed 's/ /\t/g' > truvari.regions.jer.tsv
 
-ref_rm=${REF_DIR}/ARS_UCD_v2.0.ref_repeat
+ref_rm=${REF_RM_DIR}
 rms="None RM DNA LTR Low_complexity LINE srpRNA rRNA Unknown RNA RC scRNA SINE Satellite Simple_repeat tRNA snRNA"
 
 for rm in $rms; do
-cat ${PROJECT_ROOT}/stat_pan/jer.sample | 
+cat ${SAMPLE_LIST_DIR}/jer.sample | 
     while read id; do
         for tool in $tools; do
             sbatch -A ${SLURM_ACCOUNT} -J $id.$tool.$rm \
@@ -229,7 +233,7 @@ tools="pav_bp pav_diploid sv-cutesv sv-pbsv sv-sniffles sv-svim sv-svim-asm-bp s
 
 len=(50 200 500 1000 10000 100000 1000000)
 
-cat ${PROJECT_ROOT}/stat_pan/jer.sample | 
+cat ${SAMPLE_LIST_DIR}/jer.sample | 
     while read id; do
         idd=$id
         seq 1 6 | while read i; do
@@ -244,7 +248,7 @@ bcftools view -i \"(INFO/SVLEN > -${len[$i]} & INFO/SVLEN < -${len[$i-1]}) | (IN
         done
     done
 
-cat ${PROJECT_ROOT}/stat_pan/jer.sample | 
+cat ${SAMPLE_LIST_DIR}/jer.sample | 
     while read id; do
         idd=$id
         seq 1 6 | while read i; do
@@ -279,7 +283,7 @@ echo "ID tool cla precision recall f1 gt_concordance" | sed 's/ /\t/g' > truvari
 
 tools="pav_bp pav_diploid sv-cutesv sv-pbsv sv-sniffles sv-svim sv-svim-asm-bp sv-svim-asm-diploid sv-svision svtools-sr pangenie-sr pangenie-holForJer mcPri"
 
-cat ${PROJECT_ROOT}/stat_pan/jer.sample | 
+cat ${SAMPLE_LIST_DIR}/jer.sample | 
     while read id; do
         idd=$id
         tool="pan"
@@ -293,7 +297,7 @@ bcftools view -i \"INFO/SVTYPE == 'INS'\" 0.sv_vcfgs/$id.$tool.vcf.gz -Oz -o 0.s
     "
     done
 
-cat ${PROJECT_ROOT}/stat_pan/jer.sample | 
+cat ${SAMPLE_LIST_DIR}/jer.sample | 
     while read id; do
         idd=$id
             for tool in $tools; do
@@ -310,7 +314,7 @@ bcftools view -i \"INFO/SVTYPE == 'INS' | INFO/SVTYPE == 'DUP'\" 0.sv_vcfgs/$id.
         done
     done
 
-cat ${PROJECT_ROOT}/stat_pan/jer.sample | 
+cat ${SAMPLE_LIST_DIR}/jer.sample | 
     while read id; do
         idd=$id
         for type in DEL INS; do
@@ -337,7 +341,7 @@ cat 1.truvari/$id.$tool.$type/summary.json  |
 #### truvari for pan sv
 
 ref_path=${REF_DIR}
-ref_fa=$ref_path/ARS_UCD_v2.0.fa
+ref_fa=${REF_FA}
 
 tools1="pangenie-sr pangenie-jerForHol mcPri"
 tools2="pav_bp pav_diploid sv-cutesv sv-pbsv sv-sniffles sv-svim sv-svim-asm-bp sv-svim-asm-diploid sv-svision pangenie-sr pangenie-jerForHol mcPri"
@@ -349,7 +353,7 @@ summtsv=truvari.pangenie-jer.tsv
 echo "ID tool cla precision recall f1 gt_concordance" | sed 's/ /\t/g' > $summtsv
 
 sa truvari
-cat ${PROJECT_ROOT}/stat_pan/jer.sample | 
+cat ${SAMPLE_LIST_DIR}/jer.sample | 
     while read id; do
         for tool1 in $tools1; do
         for tool2 in $tools2; do

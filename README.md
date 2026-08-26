@@ -89,6 +89,33 @@ chromosome-only subset).
 > It is only a label — the assembly is ARS-UCD2.0. By the usual UCSC convention
 > `bosTau9` means ARS-UCD1.2, which is **not** what is used here.
 
+### Input files you have to supply
+
+Nothing in this repository produces these. Each is a variable in
+`config.sh.example`; the scripts abort naming the variable if it is unset, but
+they cannot tell you the file is missing until the step that reads it runs.
+
+| Variable | What it is | Where it comes from |
+|---|---|---|
+| `REF_FA` | ARS-UCD2.0 FASTA + `.fai` | [NCBI GCF_002263795.3](https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_002263795.3/) |
+| `REF_GFF` | Gene annotation, GFF3 | Same NCBI assembly |
+| `REF_SDF` | RTG sequence data directory | `rtg format` over `REF_FA` |
+| `REF_RM_DIR` | `rm.<CLASS>.bed` per repeat class | RepeatMasker over `REF_FA` |
+| `REF_TRF_BED` | Tandem Repeats Finder intervals | TRF over `REF_FA` |
+| `REF_GAP_FILE` | Assembly gaps for `smoove --exclude` | See the warning below |
+| `SAMPLE_LIST_DIR` | `{hol,jer,pub}.sample`, one ID per line | Your cohort |
+| `BUSCO_ODB_DIR` | BUSCO lineage DB (e.g. `cetartiodactyla_odb10`) | [busco-data.ezlab.org](https://busco-data.ezlab.org/) |
+
+Raw sequencing inputs (HiFi reads, Hi-C reads, and the public assemblies listed
+in `0.assembliesDownload.md`) live under `DATA_DIR` and `PANEL_DIR`.
+
+> **`REF_GAP_FILE` mismatch, preserved as-run.** The published runs passed an
+> ARS-UCD**1.2** gap file to `smoove call --exclude` while calling against an
+> ARS-UCD**2.0** reference. Coordinates do not correspond between the two
+> assemblies, so the intervals excluded were not the intended ones. This is
+> left as it was run rather than silently corrected, since changing it changes
+> the SV callset. Use an ARS-UCD2.0 gap file for new work.
+
 ---
 
 ## Pipeline

@@ -3,6 +3,7 @@
 # then `source config.sh` before running this script.
 : "${PROJECT_ROOT:?PROJECT_ROOT is unset - see config.sh.example at the repository root}"
 : "${PANEL_DIR:?PANEL_DIR is unset - see config.sh.example at the repository root}"
+: "${SAMPLE_LIST_DIR:?SAMPLE_LIST_DIR is unset - see config.sh.example at the repository root}"
 : "${SLURM_ACCOUNT:?SLURM_ACCOUNT is unset - see config.sh.example at the repository root}"
 # --------------------------
 
@@ -23,7 +24,7 @@ zcat $id | bash panBed.sh > 0.panBed/$idd.bed
 
 wd="2.vcf_stats/2.ind"
 mkdir -p $wd
-cat ${PROJECT_ROOT}/stat_pan/jer.sample | 
+cat ${SAMPLE_LIST_DIR}/jer.sample | 
     while read sample;do 
     id=2.vcf_stats/0.filter/jerPri-pg-2024-12-18.anno_biallelic.filtered.vcf.gz 
             idd=$(basename $id);
@@ -66,7 +67,7 @@ zcat $id | bash ab_rbBed.sh > 1.ab_rb_srBed/$idd.bed
 svtoolsMerged_vcf=${PROJECT_ROOT}/pangenie_HiFi/5.svtools_all/output.ls.filter.vcf.gz
 bcftools view -h $svtoolsMerged_vcf > hdr.txt
 sed -i 's|##bcftools_viewVersion|##FORMAT=<ID=CN,Number=A,Type=Float,Description="Copy number">\n##bcftools_viewVersion|' hdr.txt
-cat ${PROJECT_ROOT}/stat_pan/jer.sample |
+cat ${SAMPLE_LIST_DIR}/jer.sample |
     while read id; do
         sbatch -A ${SLURM_ACCOUNT} -J $idd \
             -o $idd.out \
@@ -79,7 +80,7 @@ bcftools reheader -h hdr.txt $svtoolsMerged_vcf | bcftools view -i 'F_MISSING<0.
     done
 
 # lumpy
-cat ${PROJECT_ROOT}/stat_pan/jer.sample |
+cat ${SAMPLE_LIST_DIR}/jer.sample |
     while read id; do 
         idd=$id
         sbatch -A ${SLURM_ACCOUNT} -J $idd \
@@ -108,7 +109,7 @@ ls ${PROJECT_ROOT}/pangenie_HiFi/*/5.svtools_data/5.cnvnator_rawcnv/*.cnvnator.b
 
 
 pangenieMerged_vcf=${PROJECT_ROOT}/pangenie_HiFi/3.pan_all/jerHap-pg-2024-12-18_graph_genotyping.merge-biallelic.filter.vcf.gz
-cat ${PROJECT_ROOT}/stat_pan/jer.sample |
+cat ${SAMPLE_LIST_DIR}/jer.sample |
     while read id; do
         idd=$id
         sbatch -A ${SLURM_ACCOUNT} -J $idd \
@@ -125,7 +126,7 @@ bcftools view -s ${id/jer_/} -c 1 $pangenieMerged_vcf  |
 ####
 
 pangenieMerged_vcf2=${PROJECT_ROOT}/pangenie_HiFi/3.pan_all/hol-pg2hic-2024-05-22_graph_genotyping.merge-biallelic.filter.vcf.gz
-cat ${PROJECT_ROOT}/stat_pan/jer.sample |
+cat ${SAMPLE_LIST_DIR}/jer.sample |
     while read id; do
         idd=$id
         sbatch -A ${SLURM_ACCOUNT} -J $idd \
@@ -146,7 +147,7 @@ mkdir -p 6.stats-jer
 mkdir -p 7.share_stats-jer
 
 tools="pav_bp pav_diploid sv-cutesv sv-pbsv sv-sniffles sv-svim sv-svim-asm-bp sv-svim-asm-diploid sv-svision svtools-sr lumpy-sr cnvnator-sr pangenie-sr pangenie-jerForHol mcPri"
-cat ${PROJECT_ROOT}/stat_pan/jer.sample | 
+cat ${SAMPLE_LIST_DIR}/jer.sample | 
     while read id; do
         for tool in $tools; do
             idd=$id

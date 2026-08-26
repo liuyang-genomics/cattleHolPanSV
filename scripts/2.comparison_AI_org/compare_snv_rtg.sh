@@ -3,7 +3,9 @@
 # Copy config.sh.example to config.sh at the repository root, edit the paths,
 # then `source config.sh` before running this script.
 : "${PROJECT_ROOT:?PROJECT_ROOT is unset - see config.sh.example at the repository root}"
-: "${REF_DIR:?REF_DIR is unset - see config.sh.example at the repository root}"
+: "${REF_SDF:?REF_SDF is unset - see config.sh.example at the repository root}"
+: "${REF_RM_DIR:?REF_RM_DIR is unset - see config.sh.example at the repository root}"
+: "${SAMPLE_LIST_DIR:?SAMPLE_LIST_DIR is unset - see config.sh.example at the repository root}"
 # --------------------------
 
 # compare_snv_rtg.sh
@@ -11,17 +13,17 @@
 
 set -euo pipefail
 
-ref_sdf="${REF_DIR}/ARS_UCD_v2.0.sdf"
+ref_sdf="${REF_SDF}"
 vcf_dir="${PROJECT_ROOT}/stat_pan/5.rtg_snv/0.snp_vcfgs"
 out_dir="${PROJECT_ROOT}/stat_pan/5.rtg_snv/1.rtg"
-repeat_dir="${PROJECT_ROOT}/stat_pan/ref/ARS_UCD_v2.0.ref_repeat"
+repeat_dir="${REF_RM_DIR}"
 mkdir -p "$out_dir"
 
 # Methods to compare
 tools="snv_hifi snv_deepv snv_hybird pan pangenie-sr pangenie-holForJer snv_rna3 snv_rna4"
 regions="ALL LINE SINE LTR Simple_repeat Satellite Low_complexity"
 
-samples="${PROJECT_ROOT}/stat_pan/hol.sample"
+samples="${SAMPLE_LIST_DIR}/hol.sample"
 
 # Loop through sample pairs and regions
 for sample in $(cat "$samples"); do

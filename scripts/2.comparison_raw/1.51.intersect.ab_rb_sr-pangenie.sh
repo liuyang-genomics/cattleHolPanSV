@@ -3,6 +3,10 @@
 # then `source config.sh` before running this script.
 : "${PROJECT_ROOT:?PROJECT_ROOT is unset - see config.sh.example at the repository root}"
 : "${REF_DIR:?REF_DIR is unset - see config.sh.example at the repository root}"
+: "${REF_FA:?REF_FA is unset - see config.sh.example at the repository root}"
+: "${REF_RM_DIR:?REF_RM_DIR is unset - see config.sh.example at the repository root}"
+: "${CONDA_BASE:?CONDA_BASE is unset - see config.sh.example at the repository root}"
+: "${SAMPLE_LIST_DIR:?SAMPLE_LIST_DIR is unset - see config.sh.example at the repository root}"
 : "${SLURM_ACCOUNT:?SLURM_ACCOUNT is unset - see config.sh.example at the repository root}"
 # --------------------------
 
@@ -16,7 +20,7 @@ mkdir -p 9.sv.share_pangenie
 
 tools1="pangenie-sr pangenie-holForJer mcPri svtools-sr lumpy-sr cnvnator-sr"
 tools2="pav_bp pav_diploid sv-cutesv sv-pbsv sv-sniffles sv-svim sv-svim-asm-bp sv-svim-asm-diploid sv-svision svtools-sr lumpy-sr cnvnator-sr pangenie-sr pangenie-holForJer mcPri"
-cat ${PROJECT_ROOT}/stat_pan/hol.sample | 
+cat ${SAMPLE_LIST_DIR}/hol.sample | 
     while read id; do
         for tool1 in $tools1; do
         for tool2 in $tools2; do
@@ -44,7 +48,7 @@ mkdir -p 10.sv.share_pangenie-jer
 
 tools1="pangenie-sr pangenie-jerForHol mcPri svtools-sr lumpy-sr cnvnator-sr"
 tools2="pav_bp pav_diploid sv-cutesv sv-pbsv sv-sniffles sv-svim sv-svim-asm-bp sv-svim-asm-diploid sv-svision svtools-sr lumpy-sr cnvnator-sr pangenie-sr pangenie-jerForHol mcPri"
-cat ${PROJECT_ROOT}/stat_pan/jer.sample | 
+cat ${SAMPLE_LIST_DIR}/jer.sample | 
     while read id; do
         for tool1 in $tools1; do
         for tool2 in $tools2; do
@@ -70,7 +74,7 @@ done
 #### truvari for pan sv
 
 ref_path=${REF_DIR}
-ref_fa=$ref_path/ARS_UCD_v2.0.fa
+ref_fa=${REF_FA}
 
 tools1="pangenie-sr pangenie-holForJer mcPri"
 tools2="pav_bp pav_diploid sv-cutesv sv-pbsv sv-sniffles sv-svim sv-svim-asm-bp sv-svim-asm-diploid sv-svision pangenie-sr pangenie-holForJer mcPri"
@@ -83,7 +87,7 @@ summtsv=truvari.pangenie.tsv
 echo "ID tool cla precision recall f1 gt_concordance" | sed 's/ /\t/g' > $summtsv
 
 sa truvari
-cat ${PROJECT_ROOT}/stat_pan/hol.sample | 
+cat ${SAMPLE_LIST_DIR}/hol.sample | 
     while read id; do
         for tool1 in $tools1; do
         for tool2 in $tools2; do
@@ -115,12 +119,12 @@ done
 summtsv=truvari.pangenie-regions.tsv
 
 echo "ID tool cla precision recall f1 gt_concordance" | sed 's/ /\t/g' > $summtsv
-ref_rm=${REF_DIR}/ARS_UCD_v2.0.ref_repeat
+ref_rm=${REF_RM_DIR}
 rms="None RM DNA LTR Low_complexity LINE srpRNA rRNA Unknown RNA RC scRNA SINE Satellite Simple_repeat tRNA snRNA"
 
 for rm in $rms; do
 
-cat ${PROJECT_ROOT}/stat_pan/hol.sample | 
+cat ${SAMPLE_LIST_DIR}/hol.sample | 
     while read id; do
         for tool1 in $tools1; do
         for tool2 in $tools2; do
@@ -158,7 +162,7 @@ echo "ID tool cla precision recall f1 gt_concordance" | sed 's/ /\t/g' > $summts
 
 len=(50 200 500 1000 10000 100000 1000000)
 
-cat ${PROJECT_ROOT}/stat_pan/hol.sample | 
+cat ${SAMPLE_LIST_DIR}/hol.sample | 
     while read id; do
        for tool1 in $tools1; do
         for tool2 in $tools2; do
@@ -192,7 +196,7 @@ rm 1.truvari/$id.$tool2.$tool1.size_$i
 mkdir 4.truvari_type
 summtsv=truvari.pangenie-type.tsv
 echo "ID tool cla precision recall f1 gt_concordance" | sed 's/ /\t/g' > $summtsv
-cat ${PROJECT_ROOT}/stat_pan/hol.sample | 
+cat ${SAMPLE_LIST_DIR}/hol.sample | 
     while read id; do
         for tool1 in $tools1; do
         for tool2 in $tools2; do

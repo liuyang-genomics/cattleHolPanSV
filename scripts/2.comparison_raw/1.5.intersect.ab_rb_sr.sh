@@ -3,6 +3,7 @@
 # then `source config.sh` before running this script.
 : "${PROJECT_ROOT:?PROJECT_ROOT is unset - see config.sh.example at the repository root}"
 : "${PANEL_DIR:?PANEL_DIR is unset - see config.sh.example at the repository root}"
+: "${SAMPLE_LIST_DIR:?SAMPLE_LIST_DIR is unset - see config.sh.example at the repository root}"
 : "${SLURM_ACCOUNT:?SLURM_ACCOUNT is unset - see config.sh.example at the repository root}"
 # --------------------------
 
@@ -71,7 +72,7 @@ zcat $id | bash ab_rbBed.sh > 1.ab_rb_srBed/$idd.bed
 svtoolsMerged_vcf=${PROJECT_ROOT}/pangenie_HiFi/5.svtools_all/output.ls.filter.vcf.gz
 bcftools view -h $svtoolsMerged_vcf > hdr.txt
 sed -i 's|##bcftools_viewVersion|##FORMAT=<ID=CN,Number=A,Type=Float,Description="Copy number">\n##bcftools_viewVersion|' hdr.txt
-cat ${PROJECT_ROOT}/stat_pan/hol.sample |
+cat ${SAMPLE_LIST_DIR}/hol.sample |
     while read id; do
         idd=$id
         sbatch -A ${SLURM_ACCOUNT} -J $idd \
@@ -148,7 +149,7 @@ FS=OFS="\t"
 EOF
 
 pangenieMerged_vcf=${PROJECT_ROOT}/pangenie_HiFi/3.pan_all/hol-pg2hic-2024-05-22_graph_genotyping.merge-biallelic.filter.vcf.gz
-cat ${PROJECT_ROOT}/stat_pan/hol.sample |
+cat ${SAMPLE_LIST_DIR}/hol.sample |
     while read id; do
         idd=$id
         sbatch -A ${SLURM_ACCOUNT} -J $idd \
@@ -165,7 +166,7 @@ bcftools view -s ${id/sample_/} -c 1 $pangenieMerged_vcf  |
 #### pangenie2
 
 pangenieMerged_vcf2=${PROJECT_ROOT}/pangenie_HiFi/3.pan_all/jerHap-pg-2024-12-18_graph_genotyping.merge-biallelic.filter.vcf.gz
-cat ${PROJECT_ROOT}/stat_pan/hol.sample |
+cat ${SAMPLE_LIST_DIR}/hol.sample |
     while read id; do
         idd=$id
         sbatch -A ${SLURM_ACCOUNT} -J $idd \
@@ -324,7 +325,7 @@ EOF
 
 
 tools="pav_bp pav_diploid sv-cutesv sv-pbsv sv-sniffles sv-svim sv-svim-asm-bp sv-svim-asm-diploid sv-svision svtools-sr lumpy-sr cnvnator-sr pangenie-sr pangenie-holForJer mcPri"
-cat ${PROJECT_ROOT}/stat_pan/hol.sample | 
+cat ${SAMPLE_LIST_DIR}/hol.sample | 
     while read id; do
         for tool in $tools; do
             idd=$id

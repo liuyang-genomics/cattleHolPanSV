@@ -4,8 +4,10 @@
 : "${PROJECT_ROOT:?PROJECT_ROOT is unset - see config.sh.example at the repository root}"
 : "${PANEL_DIR:?PANEL_DIR is unset - see config.sh.example at the repository root}"
 : "${REF_DIR:?REF_DIR is unset - see config.sh.example at the repository root}"
+: "${REF_FA:?REF_FA is unset - see config.sh.example at the repository root}"
 : "${SOFTWARE_DIR:?SOFTWARE_DIR is unset - see config.sh.example at the repository root}"
 : "${SLURM_ACCOUNT:?SLURM_ACCOUNT is unset - see config.sh.example at the repository root}"
+: "${SLURM_PARTITION:?SLURM_PARTITION is unset - see config.sh.example at the repository root}"
 # --------------------------
 
 cd ${SOFTWARE_DIR}
@@ -26,14 +28,14 @@ cd ${PROJECT_ROOT}/minigraph-cactus
 ###  Create a sequence file  $cactusVcf_name-seqfile.txt
 ls ${PROJECT_ROOT}/0.hifiasm/s*.bp.hap?.p_ctg.fa | egrep -v "4494|4611" |
     awk '{a=$1;gsub(/.*\//,"",a);gsub(/\..*/,"",a);b[a]+=1;print a"."b[a]"\t"$1}' >  $cactusVcf_name-seqfile.txt
-echo -e "bosTau9\t${REF_DIR}/ARS_UCD_v2.0.fa" >>  $cactusVcf_name-seqfile.txt
+echo -e "bosTau9\t${REF_FA}" >>  $cactusVcf_name-seqfile.txt
 ls  ${PROJECT_ROOT}/hifi-hic-assembly/s*_hi2c.hic.hap?.p_ctg.fa | 
     awk '{a=$1;gsub(/.*\//,"",a);gsub(/\..*/,"",a);b[a]+=1;print a"."b[a]"\t"$1}' >>  $cactusVcf_name-seqfile.txt
 
 
 ## 2. Run cactus-pangenome
 cactusVcf_name="holPri-2024-12-03"
-echo -e "bosTau9\t${REF_DIR}/ARS_UCD_v2.0.fa" >  $cactusVcf_name-seqfile.txt
+echo -e "bosTau9\t${REF_FA}" >  $cactusVcf_name-seqfile.txt
 
 ls ${PANEL_DIR}/sample_*/2.assembly/sample_*.bp.p_ctg.fa | egrep -v "4494|4611" |
     awk '{a=$1;gsub(/.*\//,"",a);gsub(/\..*/,"",a);b[a]+=1;print a"\t"$1}' >> $cactusVcf_name-seqfile.txt
@@ -52,7 +54,7 @@ GCA_000003205" |
     awk '{a=$1;gsub(/.*\//,"",a);gsub(/\..*/,"",a);print a"\t"$1}' >  $cactusVcf_name-seqfile.txt
 ls /${REF_DIR}/bostauPanDownload/*_hifiasm.fa |  grep -v "ARS-UCD2.0
 G_hifiasm" | awk '{a=$1;gsub(/.*\//,"",a);gsub(/\..*/,"",a);print a"\t"$1}' >> $cactusVcf_name-seqfile.txt
-echo -e "bosTau9\t${REF_DIR}/ARS_UCD_v2.0.fa" >>  $cactusVcf_name-seqfile.txt
+echo -e "bosTau9\t${REF_FA}" >>  $cactusVcf_name-seqfile.txt
 
 
 ## 2. Run cactus-pangenome
@@ -62,7 +64,7 @@ cd ${PROJECT_ROOT}/minigraph-cactus
 ls ${PANEL_DIR}/jer_*/2.assembly/jer_*.bp.hap?.p_ctg.fa | grep -v "bak" |
     awk '{a=$1;gsub(/.*\//,"",a);gsub(/\..*/,"",a);b[a]+=1;print a"."b[a]"\t"$1}' \
     >  $cactusVcf_name-seqfile.txt
-echo -e "bosTau9\t${REF_DIR}/ARS_UCD_v2.0.fa" >>  $cactusVcf_name-seqfile.txt
+echo -e "bosTau9\t${REF_FA}" >>  $cactusVcf_name-seqfile.txt
 
 cactusVcf_name="jerPri-pg-2024-12-18"
 cd ${PROJECT_ROOT}/minigraph-cactus
@@ -70,7 +72,7 @@ cd ${PROJECT_ROOT}/minigraph-cactus
 ls ${PANEL_DIR}/jer_*/2.assembly/jer_*.bp.p_ctg.fa | grep -v "bak" |
     awk '{a=$1;gsub(/.*\//,"",a);gsub(/\..*/,"",a);b[a]+=1;print a"\t"$1}' \
     >  $cactusVcf_name-seqfile.txt
-echo -e "bosTau9\t${REF_DIR}/ARS_UCD_v2.0.fa" >>  $cactusVcf_name-seqfile.txt
+echo -e "bosTau9\t${REF_FA}" >>  $cactusVcf_name-seqfile.txt
 
 
 ### clean toil 

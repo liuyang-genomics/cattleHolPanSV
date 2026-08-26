@@ -41,8 +41,50 @@ export PANEL_DIR="$DATA_ROOT/cattle_LR-SV_panel"
 export SCRATCH_DIR="/path/to/your/scratch"
 
 # --- Reference genome --------------------------------------------------------
-# Reference FASTA plus its index and repeat/annotation BED sets.
+# Directory holding the reference assembly and its annotation sidecars.
 export REF_DIR="/path/to/your/reference"
+
+# Reference FASTA, plus a .fai index alongside it (samtools faidx).
+# The pangenome graph is built against ARS-UCD2.0. Minigraph-Cactus labels the
+# reference path "bosTau9" in 2.Pangenime.minigraph-cactus.sh; that is a path
+# name inside the graph, not the bosTau9/ARS-UCD1.2 assembly.
+export REF_FA="$REF_DIR/ARS_UCD_v2.0.fa"
+
+# Gene annotation in GFF3, used to intersect SVs with coding features.
+export REF_GFF="$REF_DIR/ARS_UCD_v2.0.gff"
+
+# RTG Tools sequence data directory, built from $REF_FA with `rtg format`.
+# Required by `rtg vcfeval` in the SNV concordance comparisons.
+export REF_SDF="$REF_DIR/ARS_UCD_v2.0.sdf"
+
+# RepeatMasker output split by class, one BED per class. Scripts read
+# $REF_RM_DIR/rm.<CLASS>.bed for CLASS in sv, del, ins, cpx, LINE, SINE, LTR.
+export REF_RM_DIR="$REF_DIR/ARS_UCD_v2.0.ref_repeat"
+
+# Tandem Repeats Finder BED for ARS-UCD2.0, passed to the long-read SV callers
+# so they can down-weight calls inside tandem repeats.
+export REF_TRF_BED="$REF_DIR/ARS-UCD2.0_trf2.bed"
+
+# Assembly gap intervals, passed to `smoove call --exclude`.
+#
+# NOTE: the published runs used an ARS-UCD1.2 gap file
+# (Bos_taurus.ARS-UCD1.2.dna.toplevel.genomic_gaps.txt) against an ARS-UCD2.0
+# reference. The coordinates do not correspond between assemblies, so the
+# excluded intervals were not the intended ones. This is preserved as-run
+# rather than silently corrected, because changing it changes the SV callset.
+# Point this at an ARS-UCD2.0 gap file for new work.
+export REF_GAP_FILE="$REF_DIR/Bos_taurus.ARS-UCD1.2.dna.toplevel.genomic_gaps.txt"
+
+# --- Required input files -----------------------------------------------------
+# These are read but never produced by anything in this repository.
+
+# Per-breed sample lists, one sample ID per line. They select which animals
+# enter each comparison; $PROJECT_ROOT/stat_pan/{hol,jer,pub}.sample.
+export SAMPLE_LIST_DIR="$PROJECT_ROOT/stat_pan"
+
+# BUSCO lineage database for assembly completeness scoring
+# (e.g. cetartiodactyla_odb10), downloaded from https://busco-data.ezlab.org/.
+export BUSCO_ODB_DIR="$EXT_PROJECT_DIR/uvm_mckay/bovine_genome"
 
 # Shared reference and software trees owned by other groups on the same cluster.
 # Only needed to reproduce the repeat-stratified and SVision comparisons.
