@@ -1,9 +1,10 @@
 # --- site configuration ---
 # Copy config.sh.example to config.sh at the repository root, edit the paths,
 # then `source config.sh` before running this script.
-: "${PANEL_DIR:?PANEL_DIR is unset - see config.sh.example at the repository root}"
 : "${PROJECT_ROOT:?PROJECT_ROOT is unset - see config.sh.example at the repository root}"
+: "${PANEL_DIR:?PANEL_DIR is unset - see config.sh.example at the repository root}"
 : "${REF_DIR:?REF_DIR is unset - see config.sh.example at the repository root}"
+: "${SLURM_ACCOUNT:?SLURM_ACCOUNT is unset - see config.sh.example at the repository root}"
 # --------------------------
 
 mkdir -p ${PROJECT_ROOT}/stat_pan/4.truvari_jer

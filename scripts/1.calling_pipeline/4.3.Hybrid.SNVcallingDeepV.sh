@@ -2,13 +2,13 @@
 # --- site configuration ---
 # Copy config.sh.example to config.sh at the repository root, edit the paths,
 # then `source config.sh` before running this script.
-: "${CONDA_BASE:?CONDA_BASE is unset - see config.sh.example at the repository root}"
 : "${PROJECT_ROOT:?PROJECT_ROOT is unset - see config.sh.example at the repository root}"
-: "${REF_DIR:?REF_DIR is unset - see config.sh.example at the repository root}"
 : "${SCRATCH_DIR:?SCRATCH_DIR is unset - see config.sh.example at the repository root}"
+: "${REF_DIR:?REF_DIR is unset - see config.sh.example at the repository root}"
+: "${EXT_PROJECT_DIR:?EXT_PROJECT_DIR is unset - see config.sh.example at the repository root}"
 : "${SOFTWARE_DIR:?SOFTWARE_DIR is unset - see config.sh.example at the repository root}"
+: "${CONDA_BASE:?CONDA_BASE is unset - see config.sh.example at the repository root}"
 # --------------------------
-
 
 set -o nounset
 set -o errexit

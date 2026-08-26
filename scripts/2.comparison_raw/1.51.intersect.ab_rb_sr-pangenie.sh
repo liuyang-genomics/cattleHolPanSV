@@ -3,8 +3,8 @@
 # then `source config.sh` before running this script.
 : "${PROJECT_ROOT:?PROJECT_ROOT is unset - see config.sh.example at the repository root}"
 : "${REF_DIR:?REF_DIR is unset - see config.sh.example at the repository root}"
+: "${SLURM_ACCOUNT:?SLURM_ACCOUNT is unset - see config.sh.example at the repository root}"
 # --------------------------
-
 
 mkdir -p ${PROJECT_ROOT}/stat_pan/3.intersect.ab_rb_sr
 cd ${PROJECT_ROOT}/stat_pan/3.intersect.ab_rb_sr

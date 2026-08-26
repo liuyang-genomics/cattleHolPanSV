@@ -4,8 +4,6 @@
 : "${PROJECT_ROOT:?PROJECT_ROOT is unset - see config.sh.example at the repository root}"
 # --------------------------
 
-
-
 cd ${PROJECT_ROOT}/comp_pan
 
 mkdir -p 3.pan_vcf_compa

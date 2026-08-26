@@ -12,6 +12,10 @@
 # Slurm account charged for submitted jobs (sbatch -A).
 export SLURM_ACCOUNT="your_slurm_account"
 
+# GPU partition, used by the DeepVariant steps. The published runs used
+# "gpu-v100" on USDA SCINet; set this to whatever your cluster provides.
+export SLURM_GPU_PARTITION="gpu"
+
 # Login-node hostname, used only by the manual `scp` lines that pull summary
 # tables back to a local workstation. Not needed to run the pipeline itself.
 export CLUSTER_HOST="your.cluster.hostname"

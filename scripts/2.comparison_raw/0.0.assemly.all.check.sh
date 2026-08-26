@@ -1,14 +1,9 @@
 # --- site configuration ---
 # Copy config.sh.example to config.sh at the repository root, edit the paths,
 # then `source config.sh` before running this script.
-: "${PANEL_DIR:?PANEL_DIR is unset - see config.sh.example at the repository root}"
 : "${PROJECT_ROOT:?PROJECT_ROOT is unset - see config.sh.example at the repository root}"
+: "${PANEL_DIR:?PANEL_DIR is unset - see config.sh.example at the repository root}"
 # --------------------------
-
-
-
-
-
 
 ${PANEL_DIR}/her_20201802/2.assembly/her_20201802.quast-hifiasm-bp/contigs_reports
 
