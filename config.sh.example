@@ -12,8 +12,8 @@
 # Slurm account charged for submitted jobs (sbatch -A).
 export SLURM_ACCOUNT="your_slurm_account"
 
-# GPU partition, used by the DeepVariant steps. The published runs used
-# "gpu-v100" on USDA SCINet; set this to whatever your cluster provides.
+# Slurm partition/queue for CPU jobs. The published runs used "atlas" on
+# USDA SCINet; set this to whatever your cluster provides.
 export SLURM_PARTITION="your_partition"
 
 # GPU partition, used by the DeepVariant steps. The published runs used

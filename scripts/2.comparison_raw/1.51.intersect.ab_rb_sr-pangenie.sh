@@ -204,7 +204,7 @@ cat ${PROJECT_ROOT}/stat_pan/hol.sample |
                     --cpus-per-task=1 \
                     --mem-per-cpu=8g \
                     --wrap="
-if [ -f 1.truvari/  ]; then 
+if [ -f 1.truvari/$id.$tool2.$tool1.$type ]; then 
     rm -rf 1.truvari/$id.$tool2.$tool1.$type ; 
 fi 
 truvari bench -b 4.truvari_type/$id.$tool1.$type.vcf.gz -c 4.truvari_type/$id.$tool2.$type.vcf.gz \
@@ -214,7 +214,6 @@ truvari bench -b 4.truvari_type/$id.$tool1.$type.vcf.gz -c 4.truvari_type/$id.$t
 cat 1.truvari/$id.$tool2.$tool1.$type/summary.json  |  
     ${CONDA_BASE}/bin/jq -r '[.precision, .recall, .f1, .gt_concordance] | @tsv' |
     sed \"s|^|$id\t$tool2.$tool1\t$type\t|\" >> $summtsv
-done
             "
             sleep 0.1
         done

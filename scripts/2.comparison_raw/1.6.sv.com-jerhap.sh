@@ -309,7 +309,6 @@ bcftools view -i \"INFO/SVTYPE == 'INS' | INFO/SVTYPE == 'DUP'\" 0.sv_vcfgs/$id.
             "
         done
     done
-    done
 
 cat ${PROJECT_ROOT}/stat_pan/jer.sample | 
     while read id; do
@@ -329,7 +328,6 @@ truvari bench -b 1.truvari/$id.pan.$type.vcf.gz -c 1.truvari/$id.$tool.$type.vcf
 cat 1.truvari/$id.$tool.$type/summary.json  |  
     ${CONDA_BASE}/bin/jq -r '[.precision, .recall, .f1, .gt_concordance] | @tsv' |
     sed \"s|^|$id\t$tool\t$type\t|\" >> truvari.type.jer.tsv
-done
             "
         done
     done

@@ -172,15 +172,21 @@ You can check every script parses before submitting anything:
 find scripts -name '*.sh' -exec bash -n {} \;
 ```
 
-**Scripts that do not parse.** Two scripts fail immediately if run as-is. They
-were used interactively, section by section, rather than executed top to bottom:
+**Loop structure repairs.** Every script now parses (`bash -n` clean). Three in
+`2.comparison_raw/` carried stray `done` lines, from being run interactively
+section by section rather than top to bottom:
 
-- `scripts/2.comparison_raw/1.6.sv.com.sh` — one `done` too many (line 313)
-- `scripts/2.comparison_raw/1.6.sv.com-jerhap.sh` — one `done` too many (line 311)
+- `1.6.sv.com.sh` and `1.6.sv.com-jerhap.sh` each had one stray `done` at the
+  shell level, plus one *inside* an `sbatch --wrap="..."` payload.
+- `1.51.intersect.ab_rb_sr-pangenie.sh` parsed fine but had a stray `done`
+  inside a `--wrap` payload, so the submitted job would have failed at runtime
+  even though the wrapper looked healthy. Its `if [ -f 1.truvari/  ]` guard was
+  also testing an incomplete path, so the `rm -rf` meant to clear a stale
+  Truvari output directory never ran; the path now matches the `rm` on the
+  following line, as it does in the sibling scripts.
 
-The commands inside them are correct and are what produced the published Truvari
-benchmarks; only the surrounding loop structure is unbalanced. The equivalent
-logic in `2.comparison_AI_org/run_truvari_benchmark.sh` parses cleanly.
+Structurally identical blocks elsewhere in the same files were used to confirm
+which `done` was the stray in each case.
 
 ---
 
