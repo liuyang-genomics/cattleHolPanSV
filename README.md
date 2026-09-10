@@ -8,7 +8,7 @@ SV and SNV calling across long- and short-read platforms, benchmarking of the
 resulting callsets against each other, and SV-based GWAS.
 
 The imputation of these SVs into large genotyped cohorts lives in a companion
-repository, [cattlePanSVimp](https://github.com/xyxss/cattlePanSVimp).
+repository, [cattlePanSVimp](https://github.com/liuyang-genomics/cattlePanSVimp).
 
 > **Scope.** This repository is code only. It was written for a Slurm HPC cluster
 > and assumes Singularity for the containerised tools. Reproducing it end to end
