@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "If you use this code, please cite the accompanying manuscript."
+message: "If you use this code, please cite the accompanying paper."
 type: software
 title: "cattleHolPanSV: Holstein pangenome construction and structural variant calling"
 abstract: >-
@@ -10,20 +10,39 @@ authors:
   - family-names: "Yang"
     given-names: "Liu"
     affiliation: "University of Maryland / USDA-ARS"
-    email: "yangqism@gmail.com"
-  # TODO: add co-authors before the manuscript is submitted, e.g.
-  # - family-names: "Ma"
-  #   given-names: "Li"
-  #   affiliation: "University of Maryland"
-  # - family-names: "Liu"
-  #   given-names: "George"
-  #   affiliation: "USDA-ARS"
-repository-code: "https://github.com/xyxss/cattleHolPanSV"
+    orcid: "https://orcid.org/0000-0002-4179-8587"
+  - family-names: "Gao"
+    given-names: "Yahui"
+  - family-names: "Kuhn"
+    given-names: "Kristen L."
+  - family-names: "Bhowmik"
+    given-names: "Nayan"
+  - family-names: "Li"
+    given-names: "Wenli"
+  - family-names: "Zanton"
+    given-names: "Geoffrey"
+  - family-names: "Fang"
+    given-names: "Lingzhao"
+  - family-names: "Cole"
+    given-names: "John B."
+  - family-names: "Li"
+    given-names: "Congjun"
+  - family-names: "Baldwin"
+    given-names: "Ransom L."
+    name-suffix: "VI"
+  - family-names: "Van Tassell"
+    given-names: "Curtis P."
+  - family-names: "Rosen"
+    given-names: "Benjamin D."
+  - family-names: "Ma"
+    given-names: "Li"
+  - family-names: "Smith"
+    given-names: "Timothy P. L."
+  - family-names: "Liu"
+    given-names: "George E."
+repository-code: "https://github.com/liuyang-genomics/cattleHolPanSV"
 license: MIT
-# TODO: set to the release date when you tag v1.0.0
-date-released: "2025-12-30"
-# TODO: add the Zenodo DOI once the release is archived, and the manuscript DOI
-# under preferred-citation, so the paper cites a fixed version rather than main.
+date-released: "2026-01-30"
 keywords:
   - pangenome
   - structural variation
@@ -34,3 +53,48 @@ keywords:
   - PanGenie
   - DeepVariant
   - GWAS
+
+# The paper is the preferred citation. If you need to cite a fixed version of the
+# code itself, archive a tagged release on Zenodo and add its DOI above.
+preferred-citation:
+  type: article
+  title: "Phased-assembly-driven pangenome graphs for structural variant genotyping and complex trait mapping in dairy cattle"
+  authors:
+    - family-names: "Yang"
+      given-names: "Liu"
+      affiliation: "University of Maryland / USDA-ARS"
+      orcid: "https://orcid.org/0000-0002-4179-8587"
+    - family-names: "Gao"
+      given-names: "Yahui"
+    - family-names: "Kuhn"
+      given-names: "Kristen L."
+    - family-names: "Bhowmik"
+      given-names: "Nayan"
+    - family-names: "Li"
+      given-names: "Wenli"
+    - family-names: "Zanton"
+      given-names: "Geoffrey"
+    - family-names: "Fang"
+      given-names: "Lingzhao"
+    - family-names: "Cole"
+      given-names: "John B."
+    - family-names: "Li"
+      given-names: "Congjun"
+    - family-names: "Baldwin"
+      given-names: "Ransom L."
+      name-suffix: "VI"
+    - family-names: "Van Tassell"
+      given-names: "Curtis P."
+    - family-names: "Rosen"
+      given-names: "Benjamin D."
+    - family-names: "Ma"
+      given-names: "Li"
+    - family-names: "Smith"
+      given-names: "Timothy P. L."
+    - family-names: "Liu"
+      given-names: "George E."
+  journal: "Nature Communications"
+  year: 2026
+  volume: 17
+  number: "2186"
+  doi: "10.1038/s41467-026-68807-4"
